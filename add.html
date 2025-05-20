@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Mart - Add to Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        h2 {
+            color: #2c6f2f;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h5 {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            box-shadow: none;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #8c9e72;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #788b5b;
+        }
+
+        .btn-danger {
+            background-color: #e53935;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        .removeProduct {
+            background-color: #e53935;
+            border: none;
+            margin-left: 10px;
+        }
+
+        .removeProduct:hover {
+            background-color: #d32f2f;
+        }
+
+        .cart-section {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .cart-section h4 {
+            color: #388e3c;
+            margin-bottom: 20px;
+        }
+
+        .cart-section p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .cart-section hr {
+            border-top: 1px solid #388e3c;
+            margin: 15px 0;
+        }
+
+        .cart-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .cart-section ul li {
+            font-size: 16px;
+        }
+
+        .cart-section .btn-success {
+            background-color: #388e3c;
+            border: none;
+        }
+
+        .cart-section .btn-success:hover {
+            background-color: #2e7d32;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-item select, .product-item input {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .product-item input[type="number"] {
+            width: 120px;
+        }
+
+        .product-item button {
+            flex-shrink: 0;
+        }
+
+        .product-item + .product-item {
+            margin-top: 15px;
+        }
+
+        .billing-section {
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+        }
+
+        .billing-section h4 {
+            text-align: center;
+            color: #388e3c;
+            margin-bottom: 20px;
+        }
+
+        .billing-section .form-control {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center">Organic Mart</h2>
+        <div class="card">
+            <h5>Customer Details</h5>
+            <label class="form-label">Name</label>
+            <input type="text" id="customerName" class="form-control" placeholder="Enter your name">
+            
+            <label class="form-label">Phone Number</label>
+            <input type="tel" id="phoneNumber" class="form-control" placeholder="Enter phone number">
+
+            <label class="form-label">Address</label>
+            <textarea id="address" class="form-control" placeholder="Enter your address"></textarea>
+
+            <h5>Select Your Organic Products</h5>
+            <div id="productSelection">
+                <div class="product-item">
+                    <select class="form-select productType">
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="dairy">Dairy Products</option>
+                        <option value="grains">Grains</option>
+                    </select>
+                    <input type="number" class="form-control price" placeholder="Price per unit" min="1">
+                    <input type="number" class="form-control quantity" value="1" min="1">
+                    <button class="btn btn-danger removeProduct">Remove</button>
+                </div>
+            </div>
+            <button id="addProductBtn" class="btn btn-secondary w-100 mb-3">Add Another Product</button>
+
+            <button id="addToCartBtn" class="btn btn-primary w-100">Add to Cart</button>
+
+            <div id="cartSection" class="cart-section">
+                <h4 class="text-center">Your Cart</h4>
+                <ul id="cartItems"></ul>
+                <hr>
+                <h4 class="text-center">Total: ₹<span id="cartTotal">0.00</span></h4>
+                <button id="checkoutBtn" class="btn btn-success w-100 mt-2">Proceed to Checkout</button>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 Organic Mart - All rights reserved.</p>
+        </div>
+
+        <!-- Billing Section -->
+        <div id="billingSection" class="billing-section">
+            <h4>Billing & Payment Details</h4>
+            <form id="paymentForm">
+                <label class="form-label">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number" required>
+                
+                <label class="form-label">Expiration Date</label>
+                <input type="month" class="form-control" id="expiryDate" required>
+
+                <label class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" placeholder="Enter CVV" required>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Pay ₹<span id="billingTotal">0.00</span></button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        // Update Cart Section
+        function updateCart() {
+            let cartItemsList = document.getElementById("cartItems");
+            let cartTotal = 0;
+            cartItemsList.innerHTML = "";
+
+            cart.forEach((item, index) => {
+                let listItem = document.createElement("li");
+                listItem.textContent = `${item.type.charAt(0).toUpperCase() + item.type.slice(1)} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}`;
+                let removeBtn = document.createElement("button");
+                removeBtn.classList.add("btn", "btn-danger", "btn-sm", "ms-2");
+                removeBtn.textContent = "Remove";
+                removeBtn.addEventListener("click", () => {
+                    cart.splice(index, 1);
+                    updateCart();
+                });
+
+                listItem.appendChild(removeBtn);
+                cartItemsList.appendChild(listItem);
+
+                cartTotal += item.price * item.quantity;
+            });
+
+            document.getElementById("cartTotal").textContent = cartTotal.toFixed(2);
+            document.getElementById("billingTotal").textContent = cartTotal.toFixed(2);
+
+            if (cart.length > 0) {
+                document.getElementById("cartSection").style.display = "block";
+            } else {
+                document.getElementById("cartSection").style.display = "none";
+            }
+        }
+
+        // Add product to cart
+        function addToCart() {
+            let productType = document.querySelector(".productType").value;
+            let price = parseFloat(document.querySelector(".price").value) || 0;
+            let quantity = parseInt(document.querySelector(".quantity").value);
+
+            if (price > 0 && quantity > 0) {
+                cart.push({ type: productType, price: price, quantity: quantity });
+                updateCart();
+            } else {
+                alert("Please enter valid product details!");
+            }
+        }
+
+        // Show the billing section (checkout)
+        function showBillingPage() {
+            document.getElementById("cartSection").style.display = "none";
+            document.getElementById("billingSection").style.display = "block";
+        }
+
+        // Handle form submission (simulated payment)
+        document.getElementById("paymentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Payment successful! Thank you for your purchase.");
+            // Reset the cart after payment
+            cart = [];
+            updateCart();
+            document.getElementById("billingSection").style.display = "none";
+        });
+
+        document.getElementById("addProductBtn").addEventListener("click", function () {
+            let productDiv = document.createElement("div");
+            productDiv.classList.add("product-item");
+            productDiv.innerHTML = `
+                <select class="form-select productType">
+                    <option value="fruits">Fruits</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="dairy">Dairy Products</option>
+                    <option value="grains">Grains</option>
+                </select>
+                <input type="number" class="form-control price" placeholder="Price per unit" min="1">
+                <input type="number" class="form-control quantity" value="1" min="1">
+                <button class="btn btn-danger removeProduct">Remove</button>
+            `;
+            document.getElementById("productSelection").appendChild(productDiv);
+        });
+
+        document.getElementById("addToCartBtn").addEventListener("click", addToCart);
+        document.getElementById("checkoutBtn").addEventListener("click", showBillingPage);
+
+        // Event delegation for removing a product entry
+        document.getElementById("productSelection").addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeProduct")) {
+                event.target.parentElement.remove();
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+    // Sticky Navbar Effect
+    window.addEventListener("scroll", function () {
+        let navbar = document.querySelector("nav");
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+
+    // Dynamic Offer Banner Update
+    const offerBanner = document.querySelector(".offer-banner");
+    setTimeout(() => {
+        offerBanner.innerHTML = "Hurry! Offer Ends Soon! Use Code: ORGANIC20";
+        offerBanner.style.background = "#ff5733";
+    }, 5000);
+
+    // Product Page - Filter Items
+    const productFilter = document.querySelector("#productFilter");
+    if (productFilter) {
+        productFilter.addEventListener("input", function () {
+            let filterValue = productFilter.value.toLowerCase();
+            let products = document.querySelectorAll(".product");
+            products.forEach(product => {
+                let title = product.querySelector(".card-title").innerText.toLowerCase();
+                if (title.includes(filterValue)) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        });
+    }
+
+    // Cart Functionality
+    const cart = [];
+    const cartContainer = document.createElement("div");
+    cartContainer.classList.add("cart-container");
+    document.body.appendChild(cartContainer);
+
+    function updateCart() {
+        cartContainer.innerHTML = "<h2>Cart</h2>";
+        if (cart.length === 0) {
+            cartContainer.innerHTML += "<p>Your cart is empty.</p>";
+        } else {
+            cart.forEach((item, index) => {
+                cartContainer.innerHTML += `<p>${item} <button class='remove-btn' data-index='${index}'>Remove</button></p>`;
+            });
+            cartContainer.innerHTML += "<button class='checkout-btn'>Checkout</button>";
+        }
+
+        document.querySelectorAll(".remove-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                cart.splice(this.dataset.index, 1);
+                updateCart();
+            });
+        });
+    }
+
+    const buyButtons = document.querySelectorAll(".buy-btn");
+    buyButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            let product = this.closest(".product").querySelector(".card-title").innerText;
+            cart.push(product);
+            updateCart();
+            this.innerText = "Added to Cart ✓";
+            this.style.backgroundColor = "#28a745";
+            setTimeout(() => {
+                this.innerText = "Buy Now";
+                this.style.backgroundColor = "#ff6600";
+            }, 2000);
+        });
+    });
+
+    // Scroll to Top Button
+    const scrollTopBtn = document.createElement("button");
+    scrollTopBtn.innerText = "⬆";
+    scrollTopBtn.style.position = "fixed";
+    scrollTopBtn.style.bottom = "20px";
+    scrollTopBtn.style.right = "20px";
+    scrollTopBtn.style.background = "#4CAF50";
+    scrollTopBtn.style.color = "white";
+    scrollTopBtn.style.border = "none";
+    scrollTopBtn.style.padding = "10px 15px";
+    scrollTopBtn.style.fontSize = "18px";
+    scrollTopBtn.style.cursor = "pointer";
+    scrollTopBtn.style.display = "none";
+    document.body.appendChild(scrollTopBtn);
+    
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 200) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+    
+    scrollTopBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Dark Mode Toggle
+    const darkModeBtn = document.createElement("button");
+    darkModeBtn.innerText = "🌙 Dark Mode";
+    darkModeBtn.style.position = "fixed";
+    darkModeBtn.style.top = "20px";
+    darkModeBtn.style.right = "20px";
+    darkModeBtn.style.background = "#333";
+    darkModeBtn.style.color = "white";
+    darkModeBtn.style.border = "none";
+    darkModeBtn.style.padding = "10px";
+    darkModeBtn.style.cursor = "pointer";
+    document.body.appendChild(darkModeBtn);
+
+    darkModeBtn.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            darkModeBtn.innerText = "☀ Light Mode";
+            document.body.style.background = "#222";
+            document.body.style.color = "white";
+            document.querySelectorAll("nav, .offer-banner, .card, footer, header").forEach(el => {
+                el.style.background = "#333";
+                el.style.color = "white";
+            });
+            document.querySelectorAll(".buy-btn").forEach(btn => {
+                btn.style.background = "#ffcc00";
+                btn.style.color = "#000";
+            });
+        } else {
+            darkModeBtn.innerText = "🌙 Dark Mode";
+            document.body.style.background = "#f4f9f4";
+            document.body.style.color = "#333";
+            document.querySelectorAll("nav, .offer-banner, .card, footer, header").forEach(el => {
+                el.style.background = "";
+                el.style.color = "";
+            });
+            document.querySelectorAll(".buy-btn").forEach(btn => {
+                btn.style.background = "#ff6600";
+                btn.style.color = "white";
+            });
+        }
+    });
+});
+
+function updateCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    let cartItemsList = document.getElementById("cartItems");
+    let cartTotal = 0;
+    cartItemsList.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        let listItem = document.createElement("li");
+        listItem.textContent = `${item.type} (x${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}`;
+        let removeBtn = document.createElement("button");
+        removeBtn.classList.add("btn", "btn-danger", "btn-sm", "ms-2");
+        removeBtn.textContent = "Remove";
+        removeBtn.addEventListener("click", () => {
+            cart.splice(index, 1);
+            updateCart();
+        });
+
+        listItem.appendChild(removeBtn);
+        cartItemsList.appendChild(listItem);
+
+        cartTotal += item.price * item.quantity;
+    });
+
+    // Apply discount if total exceeds ₹500
+    let discount = 0;
+    if (cartTotal > 500) {
+        discount = cartTotal *0.05;
+    }
+
+    let finalTotal = cartTotal - discount;
+    document.getElementById("cartTotal").textContent = finalTotal.toFixed(2);
+    
+    if (discount > 0) {
+        let discountInfo = document.createElement("p");
+        discountInfo.style.color = "green";
+        discountInfo.innerHTML = `Discount Applied: ₹${discount.toFixed(2)}`;
+        cartItemsList.appendChild(discountInfo);
+    }
+
+    document.getElementById("cartSection").style.display = cart.length > 0 ? "block" : "none";
+}
+
+    </script>
+</body>
+</html>
